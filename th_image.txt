@@ -1,0 +1,33 @@
+@startuml
+
+title th_image \n
+
+start
+
+:start_period(100 ms);
+ repeat
+     :wait_next_period();
+     if (cameraOpen?) then (true)
+          if (alreadyOpen?) then (false)
+              :err = opencamera();
+              if(err ?) then (cam nok)
+                :msgToMon!NACK;
+              else (cam ok) 
+                :msgToMon!ACK;
+                :get_image (&image);
+                :compress_image (&image, &jpg);
+                :msgToMon!IMG (&jpg);
+                :alreadyOpen == true;
+             endif 
+          else (true)
+             :get_image (&image);
+             :compress_image (&image, &jpg);
+             :msgToMon!IMG (&jpg);
+          endif
+     else (false)
+        :closecamera();
+        :alreadyOpen == false;
+     endif
+ 
+ 
+@enduml
