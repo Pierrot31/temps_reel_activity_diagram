@@ -30,4 +30,4 @@ start
      endif
  
  
-@enduml
+@enduml# temps_reel_activity_diagram
